@@ -1,15 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController } from 'ionic-angular';
 import { RegisterPage } from '../register/register';
 import {  AngularFireAuth} from '@angular/fire/auth';
 import { HomePage } from '../home/home';
 
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
 
 @IonicPage()
 @Component({
@@ -46,6 +41,7 @@ export class LoginPage {
    console.log(this.username.value, this.password.value);
   
   }
+
 
   register(){
     this.navCtrl.push(RegisterPage);

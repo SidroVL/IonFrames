@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController } from 'ionic-angular';
 import {  AngularFireAuth} from '@angular/fire/auth';
 import { LoginPage } from '../login/login';
 
@@ -42,3 +42,4 @@ registrar(){
 
 }
 }
+

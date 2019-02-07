@@ -1,16 +1,12 @@
-import { ImagePicker, ImagePickerOptions } from '@ionic-native/image-picker/ngx';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Component } from '@angular/core';
 import { IonicPage, ViewController, ToastController } from 'ionic-angular';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { ImagePicker, ImagePickerOptions } from '@ionic-native/image-picker/ngx';
+import { CargaArchivoProvider } from '../../providers/carga-archivo/carga-archivo';
 
-import { CargarArchivoProvider } from '../../providers/cargar-archivo/cargar-archivo';
 
-/**
- * Generated class for the SubirPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
+
 
 @IonicPage()
 @Component({
@@ -23,17 +19,15 @@ export class SubirPage {
   imagen64:string;
   autor: string;
   localizacion: string;
-  copyright: string;;
+  categoria: string;
+
   constructor(private viewCtrl:ViewController,
-          private camera:Camera,
-          private imagePicker:ImagePicker,
-            private carga:CargarArchivoProvider,
-            private toastCtrl: ToastController   ) {
-              this.titulo="";
-              this.imagenPreview="";
-              this.autor="";
-              this.localizacion="";
-              this.copyright="";
+              private camera:Camera,
+              private imagePicker:ImagePicker,
+              private carga:CargaArchivoProvider,
+              private toastCtrl:ToastController) {
+                this.titulo = ""; //hay que inicializar aki, si lo hacemos en la declaración da error en el [disabled] del botón
+                this.imagenPreview="";
   }
 
   cerrar_modal(){
@@ -41,23 +35,23 @@ export class SubirPage {
   }
 
   mostrar_camara(){
-    const options: CameraOptions={
-      quality:20,
-      destinationType:this.camera.DestinationType.DATA_URL,
-      encodingType:this.camera.EncodingType.JPEG,
-      mediaType:this.camera.MediaType.PICTURE,
+    const options: CameraOptions = {
+      quality: 10,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,      
     }
-
+    
     this.camera.getPicture(options).then((imageData) => {
-      
-      this.imagenPreview = 'data:image/jpeg;base64,' + imageData;
-      this.imagen64 = imageData; 
-      console.log("ok camara");
-     }, (err) => {
-      
-      console.log ("Error en camara:", JSON.stringify(err));
-     });
-
+     // imageData is either a base64 encoded string or a file URI
+     // If it's base64 (DATA_URL):
+     this.imagenPreview = 'data:image/jpeg;base64,' + imageData;
+     this.imagen64 = imageData; //esto lo añadimos al crear_post()
+     console.log("ok camara");
+    }, (err) => {
+     // Handle error
+     console.log ("Error en camara:", JSON.stringify(err));
+    });
   }
 
   seleccionar_foto(){
@@ -86,13 +80,18 @@ export class SubirPage {
       titulo: this.titulo,
       autor: this.autor,
       localizacion:this.localizacion,
-      copyright:this.copyright
+      categoria:this.categoria
 
     };
     this.carga.cargar_imagen_firebase(archivo).then(()=>this.cerrar_modal());
   }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SubirPage');
-  }
 
+  mostrar_toast( mensaje: string ){
+
+    this.toastCtrl.create({
+      message: mensaje,
+      duration: 2000
+    }).present();
+
+}
 }

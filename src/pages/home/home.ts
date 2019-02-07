@@ -1,5 +1,10 @@
+import { AngularFireDatabase} from '@angular/fire/database';
+import { SubirPage } from './../subir/subir';
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
+import {Observable} from 'rxjs/Observable'
+import { NgForOf } from '@angular/common';
+
 
 @Component({
   selector: 'page-home',
@@ -7,8 +12,17 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {
+  posts : Observable<any[]>;
+  constructor(private modalCtrl:ModalController,
+              private afDB:AngularFireDatabase) {      
+  
+    this.posts =this.afDB.list('ionframes').valueChanges();
+  }
 
+  mostrar_modal(){
+    let modal = this.modalCtrl.create(SubirPage);
+    modal.present();
+     
   }
 
 }
